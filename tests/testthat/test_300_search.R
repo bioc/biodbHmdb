@@ -2,21 +2,27 @@ test.searchMultipleWordsInDescription <- function(conn) {
 
     words <- c('and')
     ids <- conn$searchForEntries(fields=list(description=words),
-                                 max.results=3)
+        max.results=3)
+    biodb::logDebug("Found ids when searching for words \"%s\": %s.",
+        lst2str(words), lst2str(ids))
     testthat::expect_is(ids, 'character')
     testthat::expect_length(ids, 2)
     testthat::expect_equal(ids, c('HMDB0000001', 'HMDB0000002'))
 
     words <- c('histidine', 'cerebrovascular')
     ids <- conn$searchForEntries(fields=list(description=words),
-                                 max.results=3)
+        max.results=3)
+    biodb::logDebug("Found ids when searching for words \"%s\": %s.",
+        lst2str(words), lst2str(ids))
     testthat::expect_is(ids, 'character')
     testthat::expect_length(ids, 1)
     testthat::expect_equal(ids, 'HMDB0000001')
 
     words <- c('monoalkylamines', 'shiitakes')
     ids <- conn$searchForEntries(fields=list(description=words),
-                                 max.results=3)
+        max.results=3)
+    biodb::logDebug("Found ids when searching for words \"%s\": %s.",
+        lst2str(words), lst2str(ids))
     testthat::expect_is(ids, 'character')
     testthat::expect_length(ids, 1)
     testthat::expect_equal(ids, 'HMDB0000002')
