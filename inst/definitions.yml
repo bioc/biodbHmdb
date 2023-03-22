@@ -10,6 +10,7 @@ databases:
     name: HMDB Metabolites
     parsing.expr:
       accession: /metabolite/accession
+      secondary.accessions: /metabolite/secondary_accessions/accession
       average.mass: //average_molecular_weight
       cas.id: //cas_registry_number
       chebi.id: //chebi_id
@@ -34,8 +35,15 @@ databases:
     searchable.fields:
       - name
       - description
+      - secondary.accessions
 
 fields:
+
+  secondary_accessions:
+    description: Deprecated identifiers
+    case.insensitive: true
+    forbids.duplicates: true
+    card: many
 
   chemspider.id:
     description: ChemSpider ID

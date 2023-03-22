@@ -1,5 +1,6 @@
-Changes in version ????? (2022-12-06)
+Changes in version 1.5.1 (2023-03-22)
 + Remove R_front script.
++ Define new field secondary.accessions.
 
 Changes in version 1.1.2 (2022-03-13)
 + Change vignette name.

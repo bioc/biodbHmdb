@@ -1,5 +1,6 @@
 {
 	"accession": "HMDB0000001",
+	"secondary.accessions": ["HMDB00001", "HMDB0004935", "HMDB0006703", "HMDB0006704", "HMDB04935", "HMDB06703", "HMDB06704"],
 	"chemspider.id": "83153",
 	"ncbi.pubchem.comp.id": "92105",
 	"chebi.id": "50599",

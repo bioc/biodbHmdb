@@ -45,7 +45,7 @@ doCheckParsedContent=function(parsed.content) {
     # Remove fields with empty string
     for (f in self$getFieldNames()) {
         v <- self$getFieldValue(f)
-        if (is.character(v) && ! is.na(v) && v == '')
+        if (is.character(v) && ! any(is.na(v)) && all(v == ''))
             self$removeField(f)
     }
 
