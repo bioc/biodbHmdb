@@ -32,3 +32,5 @@ testthat-problems.rds
 vignettes/*.html
 vignettes/*.md
 vignettes/*.R
+hmdb_metabolites.zip
+hmdb_metabolites.xml

@@ -5,7 +5,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "Tag.h"
+//#include <zip.h>
+#include "XmlSplitter.hpp"
+#include "FileEntryMaker.hpp"
 
 // ' Extract entries from HMDB XML database file.
 // '
@@ -20,83 +22,64 @@
 // '
 // ' @export
 // [[Rcpp::export]]
-Rcpp::StringVector extractXmlEntries(const std::string& xmlFile,
+Rcpp::StringVector extractXmlEntries(const std::string& file,
                                      const std::string& extractDir) {
-	Tag entry_tag("<metabolite>", "</metabolite>");
-	Tag id_tag("<accession", "</accession>");
 
-	Rcpp::StringVector entryFiles;
+    Rcpp::StringVector entryFiles;
 
-	// Check destination folder exists
-	struct stat info;
-	if (stat(extractDir.c_str(), &info) != 0 || ! (info.st_mode & S_IFDIR))
-		Rcpp::stop("Destination folder \"%s\" does not exist.", extractDir.c_str());
+    // Check destination folder exists
+    struct stat info;
+    if (stat(extractDir.c_str(), &info) != 0 || ! (info.st_mode & S_IFDIR))
+        Rcpp::stop("Destination folder \"%s\" does not exist.",
+                extractDir.c_str());
 
-	// Open XML file
-	std::ifstream inf(xmlFile.c_str());
+    // Read input file character by character
+    try {
+        
+        FileEntryMaker em(extractDir);
+        XmlSplitter splitter(&em);
+        
+        // Detect file type
+        size_t dot_index = file.rfind('.');
+        std::string ext = file.substr(dot_index + 1);
 
-	// Check XML file exists
-	if ( ! inf.good())
-		Rcpp::stop("XML file does not exist.");
+        // Parse XML file
+        if (ext == "xml") {
 
-	// Read input file character by character
-	int file_index = 0;
-	std::string entry_filename;
-	std::string entry_id;
-	bool entry_id_complete = false;
-	std::vector<std::string> entry_ids;
-	std::ofstream *outf = NULL;
-	int c;
-	while ((c = inf.get()) != EOF) {
+            // Open XML file
+            std::ifstream inf(file.c_str());
 
-		entry_tag.advance(c);
-		if (entry_tag.isOnStartTag()) {
-			// Start writing to file
-			std::ostringstream filename;
-			filename << extractDir << "/entry_" << ++file_index << ".xml";
-			entry_filename = filename.str();
-			outf = new std::ofstream(entry_filename.c_str());
-			*outf << entry_tag.start;
-			id_tag.reset();
-			entry_id.erase();
-			entry_id_complete = false;
-		}
-		else if (entry_tag.isOnStopTag()) {
-			// End writing to file
-			outf->put(c);
-			outf->close();
-			outf = NULL;
-			entry_tag.reset();
-			if ( ! entry_id_complete)
-				Rcpp::stop("Extracted HMDB entry has no accession number.");
-			entryFiles.push_back(entry_filename);
-			entry_ids.push_back(entry_id);
-		}
-		else if (entry_tag.isInside()) {
-			// Write to file
-			outf->put(c);
-			// Look for ID tag
-			if ( ! entry_id_complete) {
-				id_tag.advance(c);
-				if (id_tag.isInside() && ! id_tag.isOnStartTag())
-					entry_id += c;
-				if (id_tag.isOnStopTag()) {
-					entry_id_complete = true;
-					// Search for first `>`
-					size_t sup_index = entry_id.find('>');
-					// Search backward for first `<`
-					size_t inf_index = entry_id.rfind('<');
-					// Extract accession
-					entry_id = entry_id.substr(sup_index + 1, inf_index - sup_index - 1);
-				}
-			}
-		}
-	}
+            // Check XML file exists
+            if ( ! inf.good())
+                throw std::runtime_error("XML file does not exist.");
 
-	// Close XML file
-	inf.close();
+            splitter.parse(inf);
 
-	entryFiles.attr("names") = entry_ids;
+            // Close XML file
+            inf.close();
+        }
 
-	return entryFiles;
+        // Unknown extension
+        else {
+            throw std::runtime_error("Does not know how to handle file type "
+                    + ext + " with " + file + ".");
+//            int err = 0;
+//            zip_t *z = zip_open(file.c_str(), 0, &err);
+//            if ( ! z)
+//                throw std::runtime_error("Error while opening ZIP file "
+//                        + file);
+//            if (zip_close(z))
+//                throw std::runtime_error("Error when closing ZIP file " + file);
+        }
+
+        // Fill vector of filenames
+        for (size_t i = 0 ; i < em.getNbEntries() ; ++i)
+            entryFiles.push_back(em.getFilename(i));
+        entryFiles.attr("names") = em.getAccessions();
+
+    } catch (std::exception& e) {
+        Rcpp::stop(e.what());
+    }
+
+    return entryFiles;
 }

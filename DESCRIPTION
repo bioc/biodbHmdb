@@ -27,15 +27,17 @@ Suggests:
 Imports:
     R6,
     biodb (>= 1.3.2),
-    Rcpp
+    Rcpp,
+    zip
 LinkingTo:
     Rcpp,
     testthat
 NeedsCompilation: yes
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Collate:
     'HmdbMetabolitesConn.R'
     'HmdbMetabolitesEntry.R'
+    fcts.R
     RcppExports.R
     'package.R'
     'catch-routine-registration.R'
