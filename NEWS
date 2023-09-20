@@ -1,3 +1,6 @@
+Changes in version 1.7.1 (2023-09-20)
++ Fix truncation of HMDB Metabolites XML file.
+
 Changes in version 1.5.2 (2023-04-04)
 + Refactorize XML extraction C++ code.
 + Correct usage of utils::unzip, limited by default to extraction of file smaller than 4GB. The correction uses UNIX unzip command, and thus should not work on Windows.
