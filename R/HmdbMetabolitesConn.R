@@ -202,7 +202,7 @@ doDownload=function() {
     extract.dir <- cch$getTmpFolderPath()
     zip.path <- self$getDownloadPath()
     biodb::logDebug("Unzipping %s into %s...", zip.path, extract.dir)
-    utils::unzip(zip.path, exdir=extract.dir)
+    zip::unzip(zip.path, exdir=extract.dir)
 
     # Search for extracted XML file
     xml.file <- private$findXmlDatabaseFile(extract.dir=extract.dir,
@@ -214,7 +214,6 @@ doDownload=function() {
                     ext=self$getPropertyValue('entry.content.type'))
 
     # Extract entries
-#    entryFiles <- private$extractEntriesFromXmlFile(xml.file, extract.dir)
     biodb::logDebug0('Extract entries from XML file "', xml.file,
                 '", into "', extract.dir, '".')
     entryFiles <- extractXmlEntries(normalizePath(xml.file),

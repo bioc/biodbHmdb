@@ -1,3 +1,8 @@
+Changes in version 1.5.2 (2023-04-04)
++ Refactorize XML extraction C++ code.
++ Correct usage of utils::unzip, limited by default to extraction of file smaller than 4GB. The correction uses UNIX unzip command, and thus should not work on Windows.
++ Implement hmdbToSqlite() function to convert HMDB to SQLite compound database.
+
 Changes in version 1.5.1 (2023-03-22)
 + Remove R_front script.
 + Define new field secondary.accessions.

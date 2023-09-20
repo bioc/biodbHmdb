@@ -2,6 +2,7 @@
 
 export(HmdbMetabolitesConn)
 export(HmdbMetabolitesEntry)
+export(hmdbToSqlite)
 import(Rcpp)
 import(biodb)
 importFrom(R6,R6Class)

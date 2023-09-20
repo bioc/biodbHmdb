@@ -11,14 +11,14 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // extractXmlEntries
-Rcpp::StringVector extractXmlEntries(const std::string& xmlFile, const std::string& extractDir);
-RcppExport SEXP _biodbHmdb_extractXmlEntries(SEXP xmlFileSEXP, SEXP extractDirSEXP) {
+Rcpp::StringVector extractXmlEntries(const std::string& file, const std::string& extractDir);
+RcppExport SEXP _biodbHmdb_extractXmlEntries(SEXP fileSEXP, SEXP extractDirSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type xmlFile(xmlFileSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type file(fileSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type extractDir(extractDirSEXP);
-    rcpp_result_gen = Rcpp::wrap(extractXmlEntries(xmlFile, extractDir));
+    rcpp_result_gen = Rcpp::wrap(extractXmlEntries(file, extractDir));
     return rcpp_result_gen;
 END_RCPP
 }
