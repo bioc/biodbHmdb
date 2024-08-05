@@ -19,8 +19,8 @@ class EntryMaker {
     protected:
         virtual void do_write(char) = 0;
         virtual void do_close_entry() = 0;
-        bool closed;
         TagDetector accession_tag;
+        bool closed;
         std::string current_accession;
         std::vector<std::string> accessions;
         bool found_accession;
