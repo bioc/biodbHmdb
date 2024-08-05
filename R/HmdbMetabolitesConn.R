@@ -21,6 +21,7 @@
 #' mybiodb$terminate()
 #'
 #' @importFrom R6 R6Class
+#' @importFrom zip unzip
 #' @export
 HmdbMetabolitesConn <- R6::R6Class("HmdbMetabolitesConn",
 inherit=biodb::BiodbConn,
