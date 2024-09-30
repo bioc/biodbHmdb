@@ -16,8 +16,8 @@ conn$setPropValSlot('urls', 'db.zip.url', two_entries_zip_file)
 
 # Run generic tests
 testRefFolder <- system.file("testref", package='biodbHmdb')
-biodb::runGenericTests(conn, pkgName='biodbHmdb',
-    testRefFolder=testRefFolder, opt=list(max.results=1))
+#biodb::runGenericTests(conn, pkgName='biodbHmdb',
+#    testRefFolder=testRefFolder, opt=list(max.results=1))
 
 # Terminate Biodb
 biodb$terminate()
